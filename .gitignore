@@ -22,5 +22,7 @@ Thumbs.db
 
 # Uploads and Downloads (if they shouldn't be tracked)
 uploads/*
+!uploads/.gitkeep
 downloads/*
+!downloads/.gitkeep
 !downloads/place_holder.pdf
