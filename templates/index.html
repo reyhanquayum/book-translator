@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic Book Translator - Upload</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .upload-section, .download-section { margin-bottom: 2em; padding: 1em; border: 1px solid #ccc; border-radius: 5px;}
+        label { display: block; margin-bottom: 0.5em; font-weight: bold; }
+        input[type="file"] { margin-bottom: 1em; }
+        button { padding: 0.5em 1em; cursor: pointer; }
+        .message { margin-top: 1em; padding: 0.5em; border-radius: 3px; }
+        .success { background-color: #e6ffed; border: 1px solid #34a853; }
+        .error { background-color: #fce8e6; border: 1px solid #ea4335; }
+    </style>
+</head>
+<body>
+    <h1>Islamic Book Translator</h1>
+
+    <div class="upload-section">
+        <h2>Step 1: Upload PDF</h2>
+        <!-- Display messages passed from Flask -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="post" action="/upload" enctype="multipart/form-data">
+            <label for="file">Select PDF file:</label>
+            <input type="file" id="file" name="file" accept=".pdf" required>
+            <br>
+            <button type="submit">Upload File</button>
+        </form>
+        <div id="loading-message" style="display: none; margin-top: 1em; padding: 0.5em; background-color: #e0e0e0; border: 1px solid #aaa;">Uploading and processing... Please wait. This may take a while depending on the file size and OCR process.</div>
+    </div>
+
+    <div class="download-section">
+        <h2>Step 2: Download (Placeholder)</h2>
+        <p>
+            After successful upload, the processed file will eventually be available here.
+            For now, you can download a placeholder:
+        </p>
+        <a href="/download/placeholder.pdf">Download Placeholder PDF</a>
+        <!-- We will dynamically update this later -->
+    </div>
+
+    <script>
+        const form = document.querySelector('form[action="/upload"]');
+        const loadingMessage = document.getElementById('loading-message');
+
+        if (form && loadingMessage) {
+            form.addEventListener('submit', function() {
+                // Show the loading message when the form is submitted
+                loadingMessage.style.display = 'block';
+                // Optionally disable the submit button to prevent multiple submissions
+                const submitButton = form.querySelector('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Processing...';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
